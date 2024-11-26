@@ -3,7 +3,7 @@ public class Customer {
     // Private variable to store the name of the customer
     private String name;
     // Declare a private variable to store the age of the customer
-    private Int age;
+    private int age;
     // Jeg skal definer om de er aktive eller passiv, almindelig eller konkurrence
     private String membership;
     // I hilket category er person tilmeldt
@@ -13,7 +13,7 @@ public class Customer {
 
 
     // Constructor for the Customer class that initializes the name and variables
-    public Customer(String name, Int age, String membership, String category, Double record)
+    public Customer(String name, int age, String membership, String category, Double record)
     {
         this.name = name;
         this.age = age;
@@ -35,13 +35,13 @@ public class Customer {
     }
 
     // Method to retrieve the age of the customer
-    public Int getAge()
+    public int getAge()
     {
         return age;
     }
 
     // Method to set the age of the customer
-    public void setAge(Int age)
+    public void setAge(int age)
     {
         this.age = age;
     }
