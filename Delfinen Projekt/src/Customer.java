@@ -10,21 +10,16 @@ public class Customer {
     private String category;
     // Der skal definer record for de top 5 i hver category
     private Double record;
-    
-
-
-
-
-
-
 
 
     // Constructor for the Customer class that initializes the name and variables
-    public Customer(String name, Int age)
+    public Customer(String name, Int age, String membership, String category, Double record)
     {
         this.name = name;
-
         this.age = age;
+        this.membership = membership;
+        this.category = category;
+        this.record = record;
     }
 
     // Method to retrieve the name of the customer
@@ -49,5 +44,35 @@ public class Customer {
     public void setAge(Int age)
     {
         this.age = age;
+    }
+
+    public String getMembership()
+    {
+        return membership;
+    }
+
+    public void setMembership(String membership)
+    {
+        this.membership = membership;
+    }
+
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
+
+    public Double getRecord()
+    {
+        return record;
+    }
+
+    public void setRecord(Double record)
+    {
+        this.record = record;
     }
 }
