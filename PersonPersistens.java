@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Test
+public class PersonPersistens
 {
     public static void writePerson(Customer p)
     {
