@@ -1,41 +1,53 @@
-// Define the Customer class
+// Customer class that wants to swing
 public class Customer {
-    // Declare a private variable to store the name of the customer
+    // Private variable to store the name of the customer
     private String name;
     // Declare a private variable to store the age of the customer
     private Int age;
+    // Jeg skal definer om de er aktive eller passiv, almindelig eller konkurrence
+    private String membership;
+    // I hilket category er person tilmeldt
+    private String category;
+    // Der skal definer record for de top 5 i hver category
+    private Double record;
+    
 
-    // Constructor for the Dog class that initializes the name and breed variables
-    public Customer(String name, Int age) {
-        // Set the name variable to the provided name parameter
+
+
+
+
+
+
+
+    // Constructor for the Customer class that initializes the name and variables
+    public Customer(String name, Int age)
+    {
         this.name = name;
-        // Set the age variable to the provided age parameter
+
         this.age = age;
     }
 
     // Method to retrieve the name of the customer
-    public String getName() {
-        // Return the value of the name variable
+    public String getName()
+    {
         return name;
     }
 
     // Method to set the name of the customer
     public void setName(String name)
     {
-        // Set the name variable to the provided name parameter
         this.name = name;
     }
 
     // Method to retrieve the age of the customer
     public Int getAge()
     {
-        // Return the value of the breed variable
         return age;
     }
 
     // Method to set the age of the customer
-    public void setAge(Int age) {
-        // Set the breed variable to the provided breed parameter
+    public void setAge(Int age)
+    {
         this.age = age;
     }
 }
