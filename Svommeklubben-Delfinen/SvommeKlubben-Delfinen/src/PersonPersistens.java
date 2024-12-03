@@ -14,17 +14,24 @@ public class PersonPersistens
         {
             String name = p.getName();
             int age = p.getAge();
+            int tlfNr = p.getTlfNr();
+            String mail = p.getMail();
             String membership = p.getMembership();
+            String membershiptype = p.getMembershiptype();
             String category = p.getCategory();
             Double record = p.getRecord();
             LocalDate recordDate = p.getRecordDate();
+            String memberDetect = p.getMemberDetect();
 
 
-            writer.append("Navn: " + name + ", ");
-            writer.append("Alder: " + age +  ", ");
-            writer.append("Membership status: " + membership + ", ");
-            writer.append("Svømme kategori: " + category + ", ");
-            writer.append("Rekordtid: " + record + ", ");
+            writer.append("Navn: " + name + " | ");
+            writer.append("Alder: " + age + " (" + memberDetect + ")" + " | ");
+            writer.append("Tlf. nr: " + tlfNr + " | ");
+            writer.append("Mail:" + mail + " | ");
+            writer.append("Medlem status: " + membership + " | ");
+            writer.append("Medlemstype: " + membershiptype + " | ");
+            writer.append("Svømme kategori: " + category + " | ");
+            writer.append("Rekordtid: " + record + " | ");
 
 
             if(recordDate != null)
@@ -35,16 +42,17 @@ public class PersonPersistens
             writer.append("\n"); // tilføjelse af ny linje for næste customer
             System.out.println("Kundeoplysninger gemt");
         }
+
         catch (IOException e)
         {
             e.printStackTrace();
         }
     }
 
+
     public static void readPerson()
     {
-        // Skilletegn mellem atributer er et komma
-        String komma = ",";
+        String skilleTegn = " \\| "; // Skilletegn mellem attributer er " | "
         String line = "";
         String personFile = "Customer info.txt";
 
@@ -53,27 +61,29 @@ public class PersonPersistens
             // Læs hver linje fra filen
             while ((line = br.readLine()) != null)
             {
-                String[] data = line.split(komma);
+                // Split linjen vha. " | " som skilletegn
+                String[] data = line.split(skilleTegn);
 
-                // Udskriv data: navn, alder, medlemsstatus, kategori, rekordtid, og dato
-                System.out.print(data[0].trim() + ", ");
-                System.out.print(data[1].trim() + ", ");
-                System.out.print(data[2].trim() + ", ");
-                System.out.print(data[3].trim() + ", ");
-                System.out.print(data[4].trim());
-
-                // Hvis dato for rekord tid findes tilføjes den også
-                if (data.length > 5)
+                // Udskrivining af det der er
+                System.out.println("Data fra fil: ");
+                for (int i = 0; i < data.length; i++)
                 {
-                    System.out.print(", " + data[5].trim());
+                    System.out.print(data[i].trim() + " | ");
                 }
 
-                System.out.println(); // Gå til næste linje
+                // Hvis der mangler data tilføjes "N/A" ved manglende felter
+                int feltMangel = 8 - data.length;
+                for (int i = 0; i < feltMangel; i++) {
+                    System.out.print("N/A | ");
+                }
+
+                // Gå til næste linje
+                System.out.println();
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
+            System.out.println("Der opstod en fejl ved læsning af fil");
             e.printStackTrace();
         }
     }
+
 }
