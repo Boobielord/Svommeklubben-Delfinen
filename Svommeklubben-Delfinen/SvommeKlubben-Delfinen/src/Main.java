@@ -115,9 +115,22 @@ public class Main
             Customer customer = customers.get(i);
             PersonPersistens.writePerson(customer);
         }
+        List<Customer> allCustomers = PersonPersistens.readPerson();
+        allCustomers.addAll(customers);
 
-        PersonPersistens.readPerson();
-
+        printTop5Results("Butterfly", allCustomers, "Butterfly");
+        printTop5Results("Crawl", allCustomers, "Crawl");
+        printTop5Results("RygCrawl", allCustomers, "RygCrawl");
+        printTop5Results("Brystvonning", allCustomers, "Brystvonning");
         scan.close();
+    }
+    public static void printTop5Results(String categoryName, List<Customer> customers, String discipline)
+    {
+        System.out.println("top 5 " + categoryName + " Results:");
+        customers.stream()
+                .filter(c -> c.getCategory().equalsIgnoreCase(discipline) && c.getRecordDate() != null)
+                .sorted(Comparator.comparingDouble(Customer::getRecord))
+                .limit(5)
+                .forEach(c -> System.out.println(c.getName() + " - time: " + c.getRecord() + " seconds"));
     }
 }
