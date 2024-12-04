@@ -22,8 +22,10 @@ public class PersonPersistens
             Double record = p.getRecord();
             LocalDate recordDate = p.getRecordDate();
             String memberDetect = p.getMemberDetect();
-
-
+            Boolean isPaid = p.getIsPaid();
+            int year = p.getYear();
+            
+            
             writer.append("Navn: " + name + " | ");
             writer.append("Alder: " + age + " (" + memberDetect + ")" + " | ");
             writer.append("Tlf. nr: " + tlfNr + " | ");
@@ -36,10 +38,21 @@ public class PersonPersistens
 
             if(recordDate != null)
             {
-                writer.append("Dato: " + recordDate);
+                writer.append("Dato: " + recordDate + " | ");
             }
 
+            // Betaling status
+            String paymentStatus;
+            if (isPaid)
+            {
+                paymentStatus = "Betalt";
+            } else {
+                paymentStatus = "Ikke betalt";
+            }
+            writer.append(" Betalings status: " + paymentStatus + " | ");
+            writer.append("Medlemsgebyr: " + p.calculateFees() + " kr. | ");
             writer.append("\n"); // tilføjelse af ny linje for næste customer
+            
             System.out.println("Kundeoplysninger gemt");
         }
 
@@ -65,25 +78,26 @@ public class PersonPersistens
                 String[] data = line.split(skilleTegn);
 
                 // Udskrivining af det der er
-                System.out.println("Data fra fil: ");
+                System.out.println("Data på fil: ");
                 for (int i = 0; i < data.length; i++)
                 {
                     System.out.print(data[i].trim() + " | ");
                 }
 
                 // Hvis der mangler data tilføjes "N/A" ved manglende felter
-                int feltMangel = 8 - data.length;
-                for (int i = 0; i < feltMangel; i++) {
+                int feltMangel = 12 - data.length;
+                for (int i = 0; i < feltMangel; i++)
+                {
                     System.out.print("N/A | ");
                 }
 
                 // Gå til næste linje
                 System.out.println();
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             System.out.println("Der opstod en fejl ved læsning af fil");
             e.printStackTrace();
         }
     }
-
 }

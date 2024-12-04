@@ -82,11 +82,11 @@ public class Main
                 }
             }
 
-
             // Hvis det er passive medlemmer
             String category = "N/A"; // Besked i tekst for kategori
             Double record = 0.0; // Default rekordtid
             LocalDate recordDate = null; // Ingen dato for passive medlemmer
+
 
             // Hvis det er aktive medlemmer
             if (membership.equals("Aktiv"))
@@ -103,9 +103,37 @@ public class Main
                 recordDate = LocalDate.parse(recordDateInput, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             }
 
+            // Antal år medlemskab varer
+            System.out.println("Antal år medlemskab varer: ");
+            int year = scan.nextInt();
+            scan.nextLine();
+
+
+            // Betalingsstatus
+            boolean isPaid = false; // default --> ikke betalt
+            while (true)
+            {
+                System.out.println("Er medlemsskab betalt? (tast 1 for ja, 2 for nej):");
+                int betalingsValg = scan.nextInt();
+                scan.nextLine();
+
+                if(betalingsValg == 1)
+                {
+                    isPaid = true;
+                    break;
+                } else if (betalingsValg == 2)
+                {
+                    isPaid = false;
+                    break;
+                } else
+                {
+                    System.out.println("Ugyldigt valg");
+                }
+
+            }
 
             // Tilføj kunden til listen
-            customers.add(new Customer(name, age, tlfNr, mail, membership, membershiptype, category, record, recordDate));
+            customers.add(new Customer(name, age, tlfNr, mail, membership, membershiptype, category, record, recordDate, year, isPaid));
         }
 
 
@@ -115,22 +143,8 @@ public class Main
             Customer customer = customers.get(i);
             PersonPersistens.writePerson(customer);
         }
-        List<Customer> allCustomers = PersonPersistens.readPerson();
-        allCustomers.addAll(customers);
-
-        printTop5Results("Butterfly", allCustomers, "Butterfly");
-        printTop5Results("Crawl", allCustomers, "Crawl");
-        printTop5Results("RygCrawl", allCustomers, "RygCrawl");
-        printTop5Results("Brystvonning", allCustomers, "Brystvonning");
+        
+        PersonPersistens.readPerson();
         scan.close();
-    }
-    public static void printTop5Results(String categoryName, List<Customer> customers, String discipline)
-    {
-        System.out.println("top 5 " + categoryName + " Results:");
-        customers.stream()
-                .filter(c -> c.getCategory().equalsIgnoreCase(discipline) && c.getRecordDate() != null)
-                .sorted(Comparator.comparingDouble(Customer::getRecord))
-                .limit(5)
-                .forEach(c -> System.out.println(c.getName() + " - time: " + c.getRecord() + " seconds"));
     }
 }

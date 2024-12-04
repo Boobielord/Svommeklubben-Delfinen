@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 
-public class Customer {
+public class Customer
+{
     // Registrering af stam oplysninger for medlemmer
     private String name;
     private int age;
@@ -10,7 +11,7 @@ public class Customer {
     // Medlem info
     private String membership; // er medlemsskabet aktiv / passiv
     private String membershiptype; // for medlemstypen - motionist, konkurrence
-    private String memberDetect; // detect for junior / senior svømmer afhængig af alder
+    private String memberDetect; // detector for junior / senior svømmer
 
     // Registering af svømning
     private String category; // svømmekategori
@@ -18,14 +19,20 @@ public class Customer {
     private LocalDate recordDate; // Dato for rekord tider YYYY-MM-DD
 
     // Betaling system
+    private int year;
     private boolean isPaid; // betaling status
-    private int year; // definer antal år til betaling
+
 
     // Constructor med parametre
     public Customer(String name, int age, int tlfNr, String mail, String membership, String membershiptype,
-                    String category, Double record, LocalDate recordDate, int year) {
+                    String category, Double record, LocalDate recordDate, int year, boolean isPaid) {
         this.name = name;
         this.age = age;
+        if (age < 18) {
+            this.memberDetect = "Junior";
+        } else {
+            this.memberDetect = "Senior";
+        }
         this.tlfNr = tlfNr;
         this.mail = mail;
 
@@ -36,13 +43,9 @@ public class Customer {
         this.record = record;
         this.recordDate = recordDate;
 
-        this.isPaid = false; // sætter som ikke betalt by default
+        this.year = year;
+        this.isPaid = isPaid;
 
-        if (age < 18) {
-            this.memberDetect = "Junior";
-        } else {
-            this.memberDetect = "Senior";
-        }
     }
 
     // Getters og setters
@@ -128,22 +131,23 @@ public class Customer {
         this.recordDate = recordDate;
     }
 
-
+    
     // betaling
-    public boolean isPaid() {
+    public boolean getIsPaid() {
         return isPaid;
     }
 
-    public void setPaid(boolean paid) {
-        isPaid = paid;
+    public void setIsPaid(boolean isPaid)
+    {
+        this.isPaid = isPaid;
     }
 
     public String getMemberDetect() {
         return memberDetect;
     }
 
-    /*
-    public int getYear() {
+    public int getYear()
+    {
         return year;
     }
 
@@ -151,5 +155,37 @@ public class Customer {
     {
         this.year = year;
     }
-    */
+
+
+    // Method to calculate membership fees
+    public double calculateFees()
+    {
+        double seniorFee = 1600.00;
+        double juniorFee = 1000.00;
+        double passiveFee = 500.00;
+        double discountRate_60_above = 0.25;
+
+        // Udregn ift. alder og medlemstype
+        if (this.membership.equalsIgnoreCase("Passiv"))
+        {
+            return passiveFee * this.year; // Passiv medlemskab der betales årligt
+        } else if (this.age < 18)
+        {
+            return juniorFee * this.year; // Junior medlemskab årlig betaling
+        } else if (this.age > 60)
+        {
+            return seniorFee * discountRate_60_above * this.year; // Rabat for sr. over 60 år
+        }
+
+        return seniorFee * this.year;
+    }
+
+    // Method to display membership details
+    public void displayDetails() {
+        System.out.println("Name: " + name);
+        System.out.println("Membership Type: " + membershiptype);
+        System.out.println("Varighed: " + year + " år");
+        System.out.println("Medlemsgebyr: " + calculateFees() + " kr.");
+        //System.out.println("Special Offers: " + checkSpecialOffers());
+    }
 }
