@@ -1,4 +1,4 @@
-
+import java.time.LocalDate;
 /**
  * Write a description of class SwimmingDiscipline here.
  *
@@ -7,36 +7,25 @@
  */
 public class SwimmingDiscipline
 {
-    private String butterfly;
-    private String crawl;
-    private String rygCrawl;
-    private String brystvonning;
+    private Customer swimmerName; // implement angelo classe
+    private String discipline; // type af discipliner
+    private double time; // tid recorded for discipline
+    private LocalDate recordDate; // recorder datoen
 
-    public SwimmingDiscipline(String butterfly, String crawl, String rygCrawl, String brystvonning)
+    public SwimmingDiscipline(Customer swimmerName, String discipline, double time, LocalDate recordDate)
     {
-        this.butterfly = butterfly;
-        this.crawl = crawl;
-        this.rygCrawl = rygCrawl;
-        this.brystvonning = brystvonning;
+        this.swimmerName = swimmerName;
+        this.discipline = discipline;
+        this.time = time;
+        this.recordDate = recordDate;
     }
 
-    public String getButterfly()
+    public double getTime()
     {
-        return butterfly;
+        return time;
     }
-
-    public String getCrawl()
+    public Customer getSwimmerName()
     {
-        return crawl;
-    }
-
-    public String getRygCrawl()
-    {
-        return rygCrawl;
-    }
-
-    public String getBrystvonning()
-    {
-        return brystvonning;
+        return swimmerName;
     }
 }
