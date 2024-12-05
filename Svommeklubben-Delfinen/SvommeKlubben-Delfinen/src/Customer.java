@@ -1,17 +1,16 @@
 import java.time.LocalDate;
 
-public class Customer
-{
+public class Customer {
     // Registrering af stam oplysninger for medlemmer
     private String name;
     private int age;
-    private int tlfNr;
+    private String tlfNr;
     private String mail;
 
     // Medlem info
     private String membership; // er medlemsskabet aktiv / passiv
     private String membershiptype; // for medlemstypen - motionist, konkurrence
-    private String memberDetect; // detector for junior / senior svømmer
+    private String memberDetect; // detect for junior / senior svømmer afhængig af alder
 
     // Registering af svømning
     private String category; // svømmekategori
@@ -19,13 +18,12 @@ public class Customer
     private LocalDate recordDate; // Dato for rekord tider YYYY-MM-DD
 
     // Betaling system
-    private int year;
     private boolean isPaid; // betaling status
-
+    private int year; // definer antal år til betaling
 
     // Constructor med parametre
-    public Customer(String name, int age, int tlfNr, String mail, String membership, String membershiptype,
-                    String category, Double record, LocalDate recordDate, int year, boolean isPaid) {
+    public Customer(String name, int age, String tlfNr, String mail, String membership, String membershiptype,
+                    String category, Double record, LocalDate recordDate, boolean isPaid, int year) {
         this.name = name;
         this.age = age;
         if (age < 18) {
@@ -44,8 +42,7 @@ public class Customer
         this.recordDate = recordDate;
 
         this.year = year;
-        this.isPaid = isPaid;
-
+        this.isPaid = isPaid; // sætter som ikke betalt by default
     }
 
     // Getters og setters
@@ -71,11 +68,11 @@ public class Customer
         }
     }
 
-    public int getTlfNr() {
+    public String getTlfNr() {
         return tlfNr;
     }
 
-    public void setTlfNr(int tlfNr) {
+    public void setTlfNr(String tlfNr) {
         this.tlfNr = tlfNr;
     }
 
@@ -105,6 +102,14 @@ public class Customer
         this.membershiptype = membershiptype;
     }
 
+    public String getMemberDetect() {
+        return memberDetect;
+    }
+
+    public void setMemberDetect(String memberDetect) {
+        this.memberDetect = memberDetect;
+    }
+
 
     // registrering af svømning
     public String getCategory() {
@@ -131,23 +136,16 @@ public class Customer
         this.recordDate = recordDate;
     }
 
-    
     // betaling
     public boolean getIsPaid() {
         return isPaid;
     }
 
-    public void setIsPaid(boolean isPaid)
-    {
-        this.isPaid = isPaid;
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
-    public String getMemberDetect() {
-        return memberDetect;
-    }
-
-    public int getYear()
-    {
+    public int getYear() {
         return year;
     }
 
@@ -155,7 +153,6 @@ public class Customer
     {
         this.year = year;
     }
-
 
     // Method to calculate membership fees
     public double calculateFees()
