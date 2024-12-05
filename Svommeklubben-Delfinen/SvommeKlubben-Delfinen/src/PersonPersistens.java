@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PersonPersistens
 {
@@ -14,7 +16,7 @@ public class PersonPersistens
         {
             String name = p.getName();
             int age = p.getAge();
-            int tlfNr = p.getTlfNr();
+            String tlfNr = p.getTlfNr();
             String mail = p.getMail();
             String membership = p.getMembership();
             String membershiptype = p.getMembershiptype();
@@ -22,10 +24,10 @@ public class PersonPersistens
             Double record = p.getRecord();
             LocalDate recordDate = p.getRecordDate();
             String memberDetect = p.getMemberDetect();
-            Boolean isPaid = p.getIsPaid();
+            boolean isPaid = p.getIsPaid();
             int year = p.getYear();
-            
-            
+
+
             writer.append("Navn: " + name + " | ");
             writer.append("Alder: " + age + " (" + memberDetect + ")" + " | ");
             writer.append("Tlf. nr: " + tlfNr + " | ");
@@ -34,25 +36,28 @@ public class PersonPersistens
             writer.append("Medlemstype: " + membershiptype + " | ");
             writer.append("Svømme kategori: " + category + " | ");
             writer.append("Rekordtid: " + record + " | ");
-
+            if (p.getRecordDate() != null) {
+                writer.append("Dato: " + p.getRecordDate() + " | ");
+            }
 
             if(recordDate != null)
             {
                 writer.append("Dato: " + recordDate + " | ");
             }
 
-            // Betaling status
             String paymentStatus;
             if (isPaid)
             {
-                paymentStatus = "Betalt";
+                paymentStatus = "betelt";
             } else {
-                paymentStatus = "Ikke betalt";
+                paymentStatus = "ikki betelt";
             }
+
             writer.append(" Betalings status: " + paymentStatus + " | ");
             writer.append("Medlemsgebyr: " + p.calculateFees() + " kr. | ");
             writer.append("\n"); // tilføjelse af ny linje for næste customer
-            
+            writer.append("aar: " + year + " | ");
+
             System.out.println("Kundeoplysninger gemt");
         }
 
@@ -63,11 +68,12 @@ public class PersonPersistens
     }
 
 
-    public static void readPerson()
+    public static List<Customer> readPerson()
     {
         String skilleTegn = " \\| "; // Skilletegn mellem attributer er " | "
         String line = "";
         String personFile = "Customer info.txt";
+        List<Customer> customersFromFile = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(personFile)))
         {
@@ -77,27 +83,42 @@ public class PersonPersistens
                 // Split linjen vha. " | " som skilletegn
                 String[] data = line.split(skilleTegn);
 
-                // Udskrivining af det der er
-                System.out.println("Data på fil: ");
-                for (int i = 0; i < data.length; i++)
+                if (data.length < 9)
                 {
-                    System.out.print(data[i].trim() + " | ");
+                    System.out.println("ugyldig data: " + line);
+                    continue;
                 }
 
                 // Hvis der mangler data tilføjes "N/A" ved manglende felter
                 int feltMangel = 12 - data.length;
-                for (int i = 0; i < feltMangel; i++)
-                {
+                for (int i = 0; i < feltMangel; i++) {
                     System.out.print("N/A | ");
                 }
+                try {
+                    String name = data[0].split(": ")[1].trim();
+                    int age = Integer.parseInt(data[1].split(": ")[1].trim());
+                    String tlfNr = data[2].split(": ")[1].trim();
+                    String mail = data[3].split(": ")[1].trim();
+                    String membership = data[4].split(": ")[1].trim();
+                    String membershiptype = data[5].split(": ")[1].trim();
+                    String category = data[6].split(": ")[1].trim();
+                    Double record = Double.parseDouble(data[7].split(": ")[1].trim());
+                    LocalDate recordDate = data.length > 8 && data[8].contains("Dato") ? LocalDate.parse(data[8].split(": ")[1].trim()) : null;
+                    int year = Integer.parseInt(data[9].split(": ")[1].trim());
 
-                // Gå til næste linje
-                System.out.println();
+                    boolean isPaid = data[9].contains("betalt");
+
+                    Customer customer = new Customer(name, age, tlfNr, mail, membership, membershiptype, category, record, recordDate, isPaid, year);
+                    customersFromFile.add(customer);
+
+                } catch (Exception e) {
+                    System.out.println("Ugyldig data i linje: " + line);
+                }
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             System.out.println("Der opstod en fejl ved læsning af fil");
             e.printStackTrace();
         }
+        return customersFromFile;
     }
 }
