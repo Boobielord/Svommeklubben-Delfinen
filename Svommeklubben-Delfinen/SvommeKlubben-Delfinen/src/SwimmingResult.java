@@ -23,6 +23,26 @@ public class SwimmingResult
         brystvonningResults = new ArrayList<>();
     }
 
+    public ArrayList <SwimmingDiscipline> getButterflyResults()
+    {
+        return butterflyResults;
+    }
+
+    public ArrayList <SwimmingDiscipline> getCrawlResults()
+    {
+        return crawlResults;
+    }
+
+    public ArrayList <SwimmingDiscipline> getRygCrawlResults()
+    {
+        return  rygCrawlResults;
+    }
+
+    public ArrayList <SwimmingDiscipline> getBrystvonningResults()
+    {
+        return brystvonningResults;
+    }
+
     public void addResult(String discipline, SwimmingDiscipline result)
     {
         switch (discipline.toLowerCase())
@@ -52,7 +72,9 @@ public class SwimmingResult
             return;
         }
 
+        System.out.println("before sorting: "+ results);
         Collections.sort(results, Comparator.comparingDouble(SwimmingDiscipline::getTime));
+        System.out.println("after sorting: "+ results);
 
         // print top 5
         System.out.println("Top 5 " + disciplineName + " Results:");
@@ -63,12 +85,5 @@ public class SwimmingResult
         }
         System.out.println();
     }
-
-    public void printResults()
-    {
-        printTop5Results("Butterfly", butterflyResults);
-        printTop5Results("Crawl ", crawlResults);
-        printTop5Results("Backstroke (RygCrawl)", rygCrawlResults);
-        printTop5Results("Breaststroke (Brystvonning)", brystvonningResults);
-    }
 }
+
