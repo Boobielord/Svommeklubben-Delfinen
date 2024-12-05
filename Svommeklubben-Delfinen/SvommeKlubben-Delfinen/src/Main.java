@@ -27,19 +27,21 @@ public class Main
 
             String memberDetect;
             if (age < 18)
-            { memberDetect = "Junior";
+            {
+                memberDetect = "Junior";
             } else
-            { memberDetect = "Senior";}
+            {
+                memberDetect = "Senior";
+            }
 
             System.out.println("Telefonnummer:");
-            int tlfNr = scan.nextInt();
-            scan.nextLine();
+            String tlfNr = scan.nextLine();
 
             System.out.println("Mail:");
             String mail = scan.nextLine();
 
             String membership = "";
-            while(true)
+            while (true)
             {
                 System.out.println("Vælg medlemsstatus (tast 1 for aktiv, 2 for passiv):");
                 int membershipChoice = scan.nextInt();
@@ -53,16 +55,16 @@ public class Main
                 {
                     membership = "Passiv";
                     break;
-                } else {
+                } else
+                {
                     System.out.println("Ugyldigt valg");
                 }
             }
 
-
             String membershiptype = "N/A"; // Standard for passive medlemmer
             if (membership.equals("Aktiv"))
             {
-                while(true)
+                while (true)
                 {
                     System.out.println("Vælg medlemstype (tast 1 for motionist, 2 for konkurrence):");
                     int membershipTypeChoice = scan.nextInt();
@@ -76,7 +78,8 @@ public class Main
                     {
                         membershiptype = "Konkurrence";
                         break;
-                    } else {
+                    } else
+                    {
                         System.out.println("Ugyldigt valg");
                     }
                 }
@@ -87,7 +90,6 @@ public class Main
             Double record = 0.0; // Default rekordtid
             LocalDate recordDate = null; // Ingen dato for passive medlemmer
 
-
             // Hvis det er aktive medlemmer
             if (membership.equals("Aktiv"))
             {
@@ -95,7 +97,7 @@ public class Main
                 category = scan.nextLine();
 
                 System.out.println("Rekordtid: "); // tid skrives med ","
-                String recordInput = scan.nextLine().replace("," , ".");
+                String recordInput = scan.nextLine().replace(",", ".");
                 record = Double.parseDouble(recordInput);
 
                 System.out.println("Rekord dato (YYYY-MM-DD): ");
@@ -108,7 +110,6 @@ public class Main
             int year = scan.nextInt();
             scan.nextLine();
 
-
             // Betalingsstatus
             boolean isPaid = false; // default --> ikke betalt
             while (true)
@@ -117,7 +118,7 @@ public class Main
                 int betalingsValg = scan.nextInt();
                 scan.nextLine();
 
-                if(betalingsValg == 1)
+                if (betalingsValg == 1)
                 {
                     isPaid = true;
                     break;
@@ -129,13 +130,12 @@ public class Main
                 {
                     System.out.println("Ugyldigt valg");
                 }
-
             }
 
             // Tilføj kunden til listen
-            customers.add(new Customer(name, age, tlfNr, mail, membership, membershiptype, category, record, recordDate, year, isPaid));
-        }
+            customers.add(new Customer(name, age, tlfNr, mail, membership, membershiptype, category, record, recordDate, isPaid, year));
 
+        }
 
         // Skriv alle kunder til fil
         for (int i = 0; i < customers.size(); i++)
@@ -143,8 +143,25 @@ public class Main
             Customer customer = customers.get(i);
             PersonPersistens.writePerson(customer);
         }
-        
-        PersonPersistens.readPerson();
+
+        List<Customer> allCustomers = PersonPersistens.readPerson();
+        allCustomers.addAll(customers);
+
+        printTop5Results("Butterfly", allCustomers, "Butterfly");
+        printTop5Results("Crawl", allCustomers, "Crawl");
+        printTop5Results("RygCrawl", allCustomers, "RygCrawl");
+        printTop5Results("Brystvonning", allCustomers, "Brystvonning");
+
         scan.close();
+    }
+
+    public static void printTop5Results(String categoryName, List<Customer> customers, String discipline)
+    {
+        System.out.println("top 5 " + categoryName + " Results:");
+        customers.stream()
+                .filter(c -> c.getCategory().equalsIgnoreCase(discipline) && c.getRecordDate() != null)
+                .sorted(Comparator.comparingDouble(Customer::getRecord))
+                .limit(5)
+                .forEach(c -> System.out.println(c.getName() + " - time: " + c.getRecord() + " seconds"));
     }
 }
