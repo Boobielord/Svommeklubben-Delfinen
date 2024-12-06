@@ -93,8 +93,25 @@ public class Main
             // Hvis det er aktive medlemmer
             if (membership.equals("Aktiv"))
             {
-                System.out.println("Svømme kategori: ");
-                category = scan.nextLine();
+                while (true)
+                {
+                    System.out.println("Vælg medlemstype (tast 1 for motionist, 2 for konkurrence):");
+                    int membershipTypeChoice = scan.nextInt();
+                    scan.nextLine();
+
+                    if (membershipTypeChoice == 1)
+                    {
+                        membershiptype = "Motionist";
+                        break;
+                    } else if (membershipTypeChoice == 2)
+                    {
+                        membershiptype = "Konkurrence";
+                        break;
+                    } else
+                    {
+                        System.out.println("Ugyldigt valg");
+                    }
+                }
 
                 System.out.println("Rekordtid: "); // tid skrives med ","
                 String recordInput = scan.nextLine().replace(",", ".");
