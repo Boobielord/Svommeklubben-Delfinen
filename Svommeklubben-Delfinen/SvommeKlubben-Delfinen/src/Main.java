@@ -90,26 +90,33 @@ public class Main
             Double record = 0.0; // Default rekordtid
             LocalDate recordDate = null; // Ingen dato for passive medlemmer
 
-            // Hvis det er aktive medlemmer
-            if (membership.equals("Aktiv"))
+           if (membership.equals("Aktiv"))
             {
-                while (true)
+                while(true)
                 {
-                    System.out.println("Vælg medlemstype (tast 1 for motionist, 2 for konkurrence):");
-                    int membershipTypeChoice = scan.nextInt();
+                    System.out.println("Svømme kategori (1 for Butterfly, 2 for Crawl, 3 for RygCrawl, 4 for Brystvonning");
+                    int svommeCategory = scan.nextInt();
                     scan.nextLine();
 
-                    if (membershipTypeChoice == 1)
+                    if (svommeCategory == 1)
                     {
-                        membershiptype = "Motionist";
+                        category = "butterfly";
                         break;
-                    } else if (membershipTypeChoice == 2)
+                    }else if (svommeCategory == 2)
                     {
-                        membershiptype = "Konkurrence";
+                        category = "crawl";
                         break;
+                    }else if (svommeCategory == 3)
+                    {
+                    category = "rygCrawl";
+                    break;
+                    }else if (svommeCategory == 4)
+                    {
+                    category = "brystvonning";
+                    break;
                     } else
                     {
-                        System.out.println("Ugyldigt valg");
+                        System.out.println("ugyldig category");
                     }
                 }
 
